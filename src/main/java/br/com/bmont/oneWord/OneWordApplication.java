@@ -1,4 +1,4 @@
-package br.com.bmont.OneWord;
+package br.com.bmont.oneWord;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

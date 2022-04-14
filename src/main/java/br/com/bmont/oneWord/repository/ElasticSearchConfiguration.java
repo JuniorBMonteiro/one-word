@@ -1,4 +1,4 @@
-package br.com.bmont.OneWord.repository;
+package br.com.bmont.oneWord.repository;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import java.net.UnknownHostException;
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "br.com.bmont.repository")
+@EnableElasticsearchRepositories(basePackages = "br.com.bmont.oneWord.repository")
 public class ElasticSearchConfiguration {
     @Bean
     public RestHighLevelClient elasticsearchClient(){

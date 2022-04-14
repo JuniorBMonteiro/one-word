@@ -1,14 +1,12 @@
-package br.com.bmont.OneWord.service;
+package br.com.bmont.oneWord.service;
 
 
-import br.com.bmont.OneWord.model.OneWord;
-import br.com.bmont.OneWord.repository.OneWordRepository;
+import br.com.bmont.oneWord.model.OneWord;
+import br.com.bmont.oneWord.repository.OneWordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class OneWordService {
@@ -32,5 +30,22 @@ public class OneWordService {
             oneWordRepository.save(oneWord);
         }
         return oneWord;
+    }
+
+    public void updateOneWord(OneWord oneWord) {
+        OneWord savedOneWord = getByWord(oneWord.getWord());
+        savedOneWord.setWordTranslation(oneWord.getWordTranslation());
+        savedOneWord.setEnglishText(oneWord.getEnglishText());
+        savedOneWord.setPortugueseText(oneWord.getPortugueseText());
+        oneWordRepository.save(savedOneWord);
+    }
+
+
+    public void deleteOneWord(String word){
+        oneWordRepository.delete(getByWord(word));
+    }
+
+    public OneWord getOneWordRandom() {
+        return oneWordRepository.findWordRandom(OneWord.class.getName());
     }
 }

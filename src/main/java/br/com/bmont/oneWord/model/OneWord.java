@@ -1,4 +1,4 @@
-package br.com.bmont.OneWord.model;
+package br.com.bmont.oneWord.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -17,6 +17,8 @@ public class OneWord {
     private String englishText;
     private String portugueseText;
 
+    @Field(name="className")
+    private String className;
     public OneWord() {
     }
 
@@ -25,6 +27,7 @@ public class OneWord {
         this.wordTranslation = wordTranslation;
         this.englishText = englishText;
         this.portugueseText = portugueseText;
+        this.className = OneWord.class.getName();
     }
 
     @Override
@@ -70,5 +73,13 @@ public class OneWord {
 
     public void setPortugueseText(String portugueseText) {
         this.portugueseText = portugueseText;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }
