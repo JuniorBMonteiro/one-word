@@ -40,13 +40,13 @@ public class OneWordController {
     }
 
     @PutMapping
-    public ResponseEntity<OneWord> updateOneWord(@Valid @RequestBody OneWordDTO oneWord){
+    public ResponseEntity<Void> updateOneWord(@Valid @RequestBody OneWordDTO oneWord){
         oneWordService.updateOneWord(oneWord);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{word}")
-    public ResponseEntity<OneWord> deleteOneWord(@PathVariable String word){
+    public ResponseEntity<Void> deleteOneWord(@PathVariable String word){
         oneWordService.deleteOneWord(word);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
