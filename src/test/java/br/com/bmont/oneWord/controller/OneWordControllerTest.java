@@ -31,18 +31,18 @@ class OneWordControllerTest {
 
     @BeforeEach
     void setUp() {
-        PageImpl<OneWord> oneWordPage = new PageImpl<>(List.of(OneWordCreator.createOneWord()));
+        PageImpl<OneWordDTO> oneWordPage = new PageImpl<>(List.of(OneWordCreator.createOneWordDTO()));
         BDDMockito.when(oneWordServiceMock.getAllWords(ArgumentMatchers.any()))
                 .thenReturn(oneWordPage);
 
         BDDMockito.when(oneWordServiceMock.getOneWordRandom())
-                .thenReturn(OneWordCreator.createOneWord());
+                .thenReturn(OneWordCreator.createOneWordDTO());
 
         BDDMockito.when(oneWordServiceMock.getByWord(ArgumentMatchers.anyString()))
-                .thenReturn(OneWordCreator.createOneWord());
+                .thenReturn(OneWordCreator.createOneWordDTO());
 
         BDDMockito.when(oneWordServiceMock.addOneWord(ArgumentMatchers.any(OneWordDTO.class)))
-                .thenReturn(OneWordCreator.createOneWord());
+                .thenReturn(OneWordCreator.createOneWordDTO());
 
         BDDMockito.doNothing().when(oneWordServiceMock).updateOneWord(ArgumentMatchers.any(OneWordDTO.class));
 
@@ -53,7 +53,7 @@ class OneWordControllerTest {
     @DisplayName("Get All returns list of OneWord inside page object when successful")
     void getAll_ReturnsListOfOneWordInsidePageObject_WhenSuccessful() {
         String expectedWord = OneWordCreator.createOneWord().getWord();
-        Page<OneWord> oneWordPage = oneWordController.getAllWords(null).getBody();
+        Page<OneWordDTO> oneWordPage = oneWordController.getAllWords(null).getBody();
         Assertions.assertThat(oneWordPage).isNotNull();
         Assertions.assertThat(oneWordPage.toList()).isNotEmpty().hasSize(1);
         Assertions.assertThat(oneWordPage.toList().get(0).getWord()).isEqualTo(expectedWord);
@@ -63,7 +63,7 @@ class OneWordControllerTest {
     @DisplayName("Get by word returns OneWord when successful")
     void getByWord_ReturnsOneWord_WhenSuccessful(){
         String expectedWord = OneWordCreator.createOneWord().getWord();
-        OneWord oneWord = oneWordController.getByWord(expectedWord).getBody();
+        OneWordDTO oneWord = oneWordController.getByWord(expectedWord).getBody();
         Assertions.assertThat(oneWord).isNotNull();
         Assertions.assertThat(oneWord.getWord())
                 .isNotEmpty()
@@ -75,7 +75,7 @@ class OneWordControllerTest {
     @DisplayName("Get random returns OneWord when successful")
     void getRandom_ReturnsOneWord_WhenSuccessful(){
         String expectedWord = OneWordCreator.createOneWord().getWord();
-        OneWord oneWord = oneWordController.getOneWordRandom().getBody();
+        OneWordDTO oneWord = oneWordController.getOneWordRandom().getBody();
         Assertions.assertThat(oneWord).isNotNull();
         Assertions.assertThat(oneWord.getWord()).isNotEmpty();
         Assertions.assertThat(oneWord.getWord()).isEqualTo(expectedWord);
@@ -85,7 +85,7 @@ class OneWordControllerTest {
     @DisplayName("Add returns OneWord when successful")
     void add_Returns_OneWord_When_Successful(){
         OneWordDTO expectedWord = OneWordCreator.createOneWordDTO();
-        OneWord oneWord = oneWordController.addOneWord(expectedWord).getBody();
+        OneWordDTO oneWord = oneWordController.addOneWord(expectedWord).getBody();
         Assertions.assertThat(oneWord).isNotNull();
         Assertions.assertThat(oneWord.getWord()).isNotEmpty();
         Assertions.assertThat(oneWord.getWord()).isEqualTo(OneWordCreator.createOneWord().getWord());

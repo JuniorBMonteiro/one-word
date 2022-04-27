@@ -8,7 +8,7 @@ public class OneWordCreator {
     public static OneWord createOneWord(){
         return OneWord.builder()
                 .word("test")
-                .wordTranslation("test")
+                .translation("test")
                 .englishText("test")
                 .portugueseText("test")
                 .className(OneWord.class.getName())
@@ -18,7 +18,7 @@ public class OneWordCreator {
     public static OneWordDTO createOneWordDTO(){
         return OneWordDTO.builder()
                 .word("test")
-                .wordTranslation("test")
+                .translation("test")
                 .englishText("test")
                 .portugueseText("test")
                 .build();

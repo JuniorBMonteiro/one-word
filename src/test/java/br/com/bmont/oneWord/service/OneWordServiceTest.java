@@ -14,6 +14,8 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -30,8 +32,16 @@ class OneWordServiceTest {
     @Mock
     private OneWordRepository oneWordRepositoryMock;
 
+    @Mock
+    private ModelMapper modelMapperMock;
+
     @BeforeEach
     void setUp(){
+        OneWordDTO oneWordDTO = OneWordCreator.createOneWordDTO();
+
+        BDDMockito.when(modelMapperMock.map(ArgumentMatchers.any(OneWord.class), ArgumentMatchers.any()))
+                .thenReturn(oneWordDTO);
+
         PageImpl<OneWord> oneWordPage = new PageImpl<>(List.of(OneWordCreator.createOneWord()));
 
         BDDMockito.when(oneWordRepositoryMock.findAll(ArgumentMatchers.any(PageRequest.class)))
@@ -54,7 +64,7 @@ class OneWordServiceTest {
     @DisplayName("Get all returns list of OneWord inside page object when successful")
     void getAll_ReturnsListOfOneWordInsidePageObject_WhenSuccessful(){
         String expectedWord = OneWordCreator.createOneWord().getWord();
-        Page<OneWord> oneWordPage = oneWordService.getAllWords(PageRequest.of(1,1));
+        Page<OneWordDTO> oneWordPage = oneWordService.getAllWords(PageRequest.of(1,1));
         Assertions.assertThat(oneWordPage).isNotNull();
         Assertions.assertThat(oneWordPage.toList()).isNotEmpty().hasSize(1);
         Assertions.assertThat(oneWordPage.toList().get(0).getWord()).isEqualTo(expectedWord);
@@ -64,7 +74,7 @@ class OneWordServiceTest {
     @DisplayName("Get by word returns OneWord when successful")
     void getByWord_ReturnsOneWord_WhenSuccessful(){
         String expectedWord = OneWordCreator.createOneWord().getWord();
-        OneWord oneWord = oneWordService.getByWord(expectedWord);
+        OneWordDTO oneWord = oneWordService.getByWord(expectedWord);
         Assertions.assertThat(oneWord).isNotNull();
         Assertions.assertThat(oneWord.getWord())
                 .isNotEmpty()
@@ -85,7 +95,7 @@ class OneWordServiceTest {
     @DisplayName("Get random returns OneWord when successful")
     void getRandom_ReturnsOneWord_WhenSuccessful(){
         String expectedWord = OneWordCreator.createOneWord().getWord();
-        OneWord oneWord = oneWordService.getOneWordRandom();
+        OneWordDTO oneWord = oneWordService.getOneWordRandom();
         Assertions.assertThat(oneWord).isNotNull();
         Assertions.assertThat(oneWord.getWord())
                 .isNotEmpty()
@@ -95,14 +105,17 @@ class OneWordServiceTest {
     @Test
     @DisplayName("Add returns OneWord when successful")
     void add_Returns_OneWord_When_Successful(){
+        OneWord oneWord = OneWordCreator.createOneWord();
+        BDDMockito.when(modelMapperMock.map(ArgumentMatchers.any(OneWordDTO.class), ArgumentMatchers.any()))
+                .thenReturn(oneWord);
         // simula que a word não existe
         BDDMockito.when(oneWordRepositoryMock.findByWord(ArgumentMatchers.anyString()))
                 .thenReturn(null);
         OneWordDTO expectedWord = OneWordCreator.createOneWordDTO();
-        OneWord oneWord = oneWordService.addOneWord(expectedWord);
-        Assertions.assertThat(oneWord).isNotNull();
-        Assertions.assertThat(oneWord.getWord()).isNotEmpty();
-        Assertions.assertThat(oneWord.getWord()).isEqualTo(OneWordCreator.createOneWord().getWord());
+        OneWordDTO oneWordDTO = oneWordService.addOneWord(expectedWord);
+        Assertions.assertThat(oneWordDTO).isNotNull();
+        Assertions.assertThat(oneWordDTO.getWord()).isNotEmpty();
+        Assertions.assertThat(oneWordDTO.getWord()).isEqualTo(OneWordCreator.createOneWord().getWord());
     }
 
     @Test
@@ -118,6 +131,9 @@ class OneWordServiceTest {
     @Test
     @DisplayName("Update OneWord when successful")
     void update_updatesOneWord_WhenSuccessful(){
+        OneWord oneWord = OneWordCreator.createOneWord();
+        BDDMockito.when(modelMapperMock.map(ArgumentMatchers.any(OneWordDTO.class), ArgumentMatchers.any()))
+                .thenReturn(oneWord);
         Assertions.assertThatCode(() -> oneWordService.updateOneWord(OneWordCreator.createOneWordDTO()))
                 .doesNotThrowAnyException();
     }
@@ -125,6 +141,9 @@ class OneWordServiceTest {
     @Test
     @DisplayName("Delete OneWord when successful")
     void delete_RemovesOneWord_WhenSuccessful(){
+        OneWord oneWord = OneWordCreator.createOneWord();
+        BDDMockito.when(modelMapperMock.map(ArgumentMatchers.any(OneWordDTO.class), ArgumentMatchers.any()))
+                .thenReturn(oneWord);
         Assertions.assertThatCode(() -> oneWordService.deleteOneWord("teste"))
                 .doesNotThrowAnyException();
     }

@@ -22,7 +22,7 @@ public class OneWord {
     @NotEmpty(message = "The word cannot be empty")
     private String word;
     @NotEmpty(message = "The word translation cannot be empty")
-    private String wordTranslation;
+    private String translation;
     @NotEmpty(message = "The english text cannot be empty")
     private String englishText;
     @NotEmpty(message = "The portuguese text cannot be empty")
